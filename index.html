@@ -1,1049 +1,87 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sistema de sorteios e concursos online - Participe de forma segura e transparente">
-    <meta name="keywords" content="sorteio, concurso, participar, ganhador, prêmio">
-    <meta name="author" content="Sistema de Sorteios">
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    <title>Sistema de Sorteios - Participar do Concurso</title>
-    <style>
-        body {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-        }
-
-        .title {
-            color: #333;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .form-label {
-            display: block;
-            color: #555;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-            box-sizing: border-box;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border: 1px solid #c3e6cb;
-            display: none;
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #f39c12;
-            animation: confetti-fall 3s linear infinite;
-            z-index: 1000;
-        }
-
-        .confetti:nth-child(odd) {
-            background: #e74c3c;
-            width: 8px;
-            height: 8px;
-            animation-duration: 2.5s;
-        }
-
-        .confetti:nth-child(even) {
-            background: #3498db;
-        }
-
-        .confetti:nth-child(3n) {
-            background: #2ecc71;
-            width: 6px;
-            height: 6px;
-            animation-duration: 3.5s;
-        }
-
-        .confetti:nth-child(4n) {
-            background: #9b59b6;
-            width: 12px;
-            height: 4px;
-        }
-
-        .confetti:nth-child(5n) {
-            background: #f1c40f;
-            width: 4px;
-            height: 12px;
-            animation-duration: 2.8s;
-        }
-
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        .celebration-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            display: none;
-        }
-
-        .firework {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            animation: firework 1s ease-out forwards;
-        }
-
-        @keyframes firework {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(20);
-                opacity: 0;
-            }
-        }
-
-        .bounce-animation {
-            animation: bounce 0.6s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .secret-button {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            width: 30px;
-            height: 30px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 12px;
-            opacity: 0.2;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        .secret-button:hover {
-            opacity: 0.5;
-            transform: scale(1.05);
-        }
-
-        .secret-modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .secret-modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .login-form {
-            margin-top: 20px;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 16px;
-            margin: 10px 0;
-            box-sizing: border-box;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .database-view {
-            display: none;
-            text-align: left;
-            margin-top: 20px;
-        }
-
-        .user-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .user-table th,
-        .user-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .user-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-        }
-
-        .user-table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        .error-message {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .close-modal {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .close-modal:hover {
-            color: #333;
-        }
-
-        .admin-options {
-            margin-top: 20px;
-        }
-
-        .admin-btn {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        /* Estilos Profissionais do Sorteio */
-        .raffle-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
-
-        .raffle-title {
-            font-size: 32px;
-            font-weight: 900;
-            margin: 0 0 8px 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 2px;
-        }
-
-        .raffle-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        .raffle-phase {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 20px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            border: 2px solid #f0f0f0;
-        }
-
-        .phase-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-        }
-
-        .phase-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-
-        /* Contagem Regressiva Profissional */
-        .countdown-display {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            margin: 40px 0;
-        }
-
-        .countdown-circle-pro {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .countdown-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotate(-90deg);
-        }
-
-        .countdown-ring circle:last-child {
-            transition: stroke-dashoffset 1s ease-in-out;
-        }
-
-        .countdown-number-pro {
-            font-size: 64px;
-            font-weight: 900;
-            color: #667eea;
-            z-index: 10;
-            text-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-            animation: number-pulse 0.8s ease-out;
-        }
-
-        .countdown-status {
-            font-size: 18px;
-            color: #666;
-            font-weight: 500;
-            margin-top: 20px;
-            animation: status-fade 2s ease-in-out infinite alternate;
-        }
-
-        /* Seleção de Participantes */
-        .participants-display {
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        .participants-counter {
-            font-size: 28px;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 30px;
-        }
-
-        .participants-counter span {
-            font-size: 48px;
-            color: #764ba2;
-        }
-
-        .participants-animation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60px;
-        }
-
-        .loading-dots {
-            display: flex;
-            gap: 8px;
-        }
-
-        .loading-dots span {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #667eea;
-            animation: loading-bounce 1.4s ease-in-out infinite both;
-        }
-
-        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-
-        /* Algoritmo de Sorteio */
-        .algorithm-display {
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        .algorithm-visual {
-            margin: 30px 0;
-        }
-
-        .spinning-wheel {
-            width: 120px;
-            height: 120px;
-            border: 8px solid #e0e0e0;
-            border-top: 8px solid #667eea;
-            border-radius: 50%;
-            margin: 0 auto;
-            animation: wheel-spin 1s linear infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .wheel-center {
-            font-size: 32px;
-            animation: wheel-center-counter 1s linear infinite reverse;
-        }
-
-        .algorithm-status {
-            font-size: 18px;
-            color: #666;
-            font-weight: 500;
-            margin-top: 20px;
-        }
-
-        /* Resultado Final */
-        .result-container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .result-header {
-            margin-bottom: 30px;
-        }
-
-        .trophy-animation {
-            font-size: 64px;
-            animation: trophy-bounce 2s ease-in-out infinite;
-            margin-bottom: 15px;
-        }
-
-        .result-title {
-            font-size: 28px;
-            font-weight: 900;
-            color: #155724;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .winner-card {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            border: 3px solid #28a745;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .winner-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: card-shine 3s ease-in-out infinite;
-        }
-
-        .winner-badge {
-            background: #28a745;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-
-        .winner-name {
-            font-size: 36px;
-            font-weight: 900;
-            color: #155724;
-            margin-bottom: 25px;
-            animation: winner-glow 2s ease-in-out infinite alternate;
-        }
-
-        .winner-details {
-            margin: 25px 0;
-        }
-
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(21, 87, 36, 0.1);
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #155724;
-        }
-
-        .detail-value {
-            font-weight: 700;
-            color: #28a745;
-        }
-
-        .winner-certificate {
-            background: rgba(255, 255, 255, 0.8);
-            border: 2px dashed #28a745;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 25px;
-        }
-
-        .certificate-text {
-            font-size: 14px;
-            color: #155724;
-            font-weight: 600;
-        }
-
-        .certificate-number {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        /* Botões de Ação */
-        .raffle-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .action-btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .action-btn.primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .action-btn.secondary {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Animações */
-        @keyframes number-pulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes status-fade {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes loading-bounce {
-            0%, 80%, 100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes wheel-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes wheel-center-counter {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
-
-        @keyframes trophy-bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
-        }
-
-        @keyframes card-shine {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-            100% {
-                transform: translateX(100%) translateY(100%) rotate(45deg);
-            }
-        }
-
-        @keyframes winner-glow {
-            0% {
-                text-shadow: 0 0 5px rgba(21, 87, 36, 0.5);
-            }
-            100% {
-                text-shadow: 0 0 20px rgba(21, 87, 36, 0.8), 0 0 30px rgba(21, 87, 36, 0.6);
-            }
-        }
-
-        @keyframes name-flash {
-            0% {
-                transform: scale(0.9);
-                opacity: 0.8;
-            }
-            50% {
-                transform: scale(1.05);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes dramatic-pause {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 30px 20px;
-                margin: 10px;
-            }
-            
-            .title {
-                font-size: 24px;
-            }
-            
-            .secret-button {
-                bottom: 15px;
-                right: 15px;
-                width: 35px;
-                height: 35px;
-                font-size: 16px;
-            }
-
-            .countdown-circle {
-                width: 100px;
-                height: 100px;
-            }
-
-            .countdown-circle::before {
-                width: 110px;
-                height: 110px;
-            }
-
-            .countdown-number {
-                font-size: 40px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 class="title">🎯 Sistema de Sorteios</h1>
-        
-        <form id="concursoForm">
-            <div class="form-group">
-                <label class="form-label" for="platformId">ID na Plataforma</label>
-                <input 
-                    type="number" 
-                    id="platformId" 
-                    name="platformId" 
-                    class="form-input" 
-                    placeholder="Digite seu ID da plataforma"
-                    required
-                >
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="firstName">Nome</label>
-                <input 
-                    type="text" 
-                    id="firstName" 
-                    name="firstName" 
-                    class="form-input" 
-                    placeholder="Digite seu nome"
-                    required
-                >
-            </div>
-            
-
-            
-            <button type="submit" class="submit-btn">
-                Concorrer Agora
-            </button>
-        </form>
-        
-        <div id="successMessage" class="success-message">
-            ✅ Inscrição realizada com sucesso! Boa sorte no sorteio!
-        </div>
-        
-        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #28a745; font-size: 14px; color: #666;">
-            <div style="font-weight: 600; color: #28a745; margin-bottom: 8px;">🛡️ Site Seguro e Confiável</div>
-            <div>Este é um sistema legítimo de sorteios. Todos os dados são processados localmente no seu navegador e não são enviados para servidores externos. O sorteio é realizado de forma transparente e aleatória.</div>
-        </div>
-    </div>
-
-    <div id="celebrationOverlay" class="celebration-overlay"></div>
-
-    <!-- Botão discreto -->
-    <div id="secretButton" class="secret-button">•</div>
-    
-    <!-- Modal administrativo -->
-    <div id="secretModal" class="secret-modal">
-        <div class="secret-modal-content">
-            <span class="close-modal">&times;</span>
-            
-            <!-- Tela de Login -->
-            <div id="loginScreen">
-                <h3>🔐 Acesso Administrativo</h3>
-                <div class="login-form">
-                    <input 
-                        type="password" 
-                        id="adminPassword" 
-                        class="password-input" 
-                        placeholder="Digite a senha administrativa"
-                    >
-                    <button class="admin-btn" onclick="checkPassword()">Entrar</button>
-                    <div id="errorMessage" class="error-message" style="display: none;"></div>
-                </div>
-            </div>
-            
-            <!-- Banco de Dados -->
-            <div id="databaseScreen" class="database-view">
-                <h3>📊 Banco de Dados - Usuários Inscritos</h3>
-                <table class="user-table">
-                    <thead>
-                        <tr>
-                            <th>ID Plataforma</th>
-                            <th>Nome</th>
-                            <th>Data Inscrição</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                        <!-- Dados serão inseridos aqui -->
-                    </tbody>
-                </table>
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="admin-btn" onclick="startQuickRaffle()">🎲 Iniciar Sorteio</button>
-                    <button class="admin-btn" onclick="clearAllData()" style="background: linear-gradient(135deg, #dc3545, #c82333);">🗑️ Limpar Dados</button>
-                    <button class="admin-btn" onclick="logout()">Sair</button>
-                </div>
+<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="description" content="Sistema de sorteios e concursos online - Participe de forma segura e transparente"> <meta name="keywords" content="sorteio, concurso, participar, ganhador, prêmio"> <meta name="author" content="Sistema de Sorteios"> <meta name="robots" content="index, follow"> <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://www.gstatic.com; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline';"> <meta http-equiv="X-Content-Type-Options" content="nosniff"> <meta http-equiv="X-Frame-Options" content="DENY"> <meta http-equiv="X-XSS-Protection" content="1; mode=block"> <title>Sistema de Sorteios - Participar do Concurso</title> <style> body { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 20px; display: flex; align-items: center; justify-content: center; } .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); largura: 100%; largura máxima: 450px; alinhamento do texto: centro; } .title { cor: #333; tamanho da fonte: 28px; espessura da fonte: 700; margem inferior: 30px; plano de fundo: gradiente linear(135deg, #667eea, #764ba2); -webkit-background-clip: texto; -webkit-text-fill-color: transparente; clipe de fundo: texto; } .form-group { margem inferior: 25px; alinhamento do texto: esquerda; } .form-label { exibição: bloco; cor: #555; espessura da fonte: 600; margem inferior: 8px; tamanho da fonte: 14px; transformação do texto: maiúsculas; espaçamento entre letras: 0,5px; } .form-input { largura: 100%; preenchimento: 15px 20px; borda: 2px sólido #e1e5e9; raio da borda: 12px; tamanho da fonte: 16px; transição: todos 0,3s facilidade; plano de fundo: #f8f9fa; tamanho da caixa: caixa da borda; } .form-input: foco { contorno:nenhum; cor da borda: #667eea; plano de fundo: branco; sombra da caixa: 0 0 0 3px rgba(102, 126, 234, 0.1); } .submit-btn { plano de fundo: gradiente linear(135 graus, #667eea 0%, #764ba2 100%); cor: branco; borda: nenhuma; preenchimento: 18px 40px; raio da borda: 12px; tamanho da fonte: 18px; espessura da fonte: 600; cursor: ponteiro; transição: todos 0,3s facilidade; largura: 100%; transformação de texto: maiúsculas; espaçamento entre letras: 1px; margem superior: 10px; } .submit-btn: pairar { transformar: traduzirY(-2px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3); } .submit-btn:active { transform: translateY(0); } .success-message { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #c3e6cb; display: none; } .confetti { position: fixed; width: 10px; height: 10px; background: #f39c12; animation: confetti-fall 3s linear infinite; z-index: 1000; } .confetti:nth-child(odd) { background: #e74c3c; width: 8px; height: 8px; animation-duration: 2.5s; } .confetti:nth-child(even) { background: #3498db; } .confetti:nth-child(3n) { background: #2ecc71; width: 6px; height: 6px; animation-duration: 3.5s; } .confetti:nth-child(4n) { background: #9b59b6; width: 12px; height: 4px; } .confetti:nth-child(5n) { background: #f1c40f; width: 4px; height: 12px; animation-duration: 2.8s; } @keyframes confetti-fall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } } .celebration-overlay { posição: fixa; topo: 0; esquerda: 0; largura: 100%; altura: 100%; eventos de ponteiro: nenhum; índice z: 999; exibição: nenhum; } .firework { posição: absoluta; largura: 4px; altura: 4px; raio da borda: 50%; animação: avanço gradual do firework 1s; } @keyframes firework { 0% { transform: escala(1); opacidade: 1; } 100% { transform: escala(20); opacidade:0; } } .bounce-animation { animação: bounce 0,6s ease-in-out; } @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } } .secret-button { posição: fixa; inferior: 15px; direita: 15px; largura: 30px; altura: 30px; plano de fundo: rgba(0, 0, 0, 0,1); raio da borda: 50%; exibição: flex; itens de alinhamento: centralizar; justificar conteúdo: centralizar; cursor: ponteiro; tamanho da fonte: 12px; opacidade: 0,2; transição: todos 0,3s ease; z-index: 100; } .secret-button:hover { opacidade: 0,5; transformação: escala(1,05); } .secret-modal { exibição: nenhuma; posição: fixa; índice z: 2000; esquerda: 0; topo: 0; largura: 100%; altura: 100%; cor de fundo: rgba(0, 0, 0, 0, 0,5); filtro de pano de fundo: desfoque(5px); } .secret-modal-content { cor de fundo: branco; margem: 15% automático; preenchimento: 30px; raio da borda: 15px; largura: 90%; largura máxima: 400px; alinhamento do texto: centralizado; posição: relativa; sombra da caixa: 0 20px 40px rgba(0, 0, 0, 0, 0,2); } .login-form { margem superior: 20px; } .password-input { largura: 100%; preenchimento: 12px 16px; borda: 2px sólido #e1e5e9; raio da borda: 8px; tamanho da fonte: 16px; margem: 10px 0; tamanho da caixa: caixa da borda; } .password-input: foco { contorno: nenhum; cor da borda: #667eea; } .database-view { exibição: nenhum; alinhamento do texto: esquerda; margem superior: 20px; } .user-table { largura: 100%; colapso da borda: colapso; margem superior: 15px; } .user-table th, .user-table td { preenchimento: 10px; borda: 1px sólido #ddd; alinhamento do texto: esquerda; } .user-table th { plano de fundo: #f8f9fa; espessura da fonte: 600; } .user-table tr:nth-child(even) { background: #f8f9fa; } .error-message { color: #dc3545; font-size: 14px; margin-top: 10px; } .close-modal { position: absolute; right: 15px; top: 15px; font-size: 24px; cursor: pointer; color: #999; } .close-modal:hover { cor: #333; } .admin-options { margem superior: 20px; } .admin-btn { display: bloco; largura: 100%; margem: 10px 0; preenchimento: 12px; plano de fundo: gradiente linear (135 graus, #667eea, #764ba2); cor: branco; borda: nenhuma; raio da borda: 8px; cursor: ponteiro; tamanho da fonte: 14px; transição: todos 0,3s facilidade; } .admin-btn: hover { transform: translateY (-2px); sombra da caixa: 0 5px 15px rgba (102, 126, 234, 0,3); } . indicador de carregamento { display: nenhum; alinhamento do texto: centro; preenchimento: 20px; cor: #667eea; espessura da fonte: 600; } .firebase-status { background: #e8f5e8; color: #2d5a2d; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 12px; text-align: center; border: 1px solid #c3e6cb; } /* Estilos Profissionais do Sorteio */ .raffle-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); } .raffle-title { font-size: 32px; font-weight: 900; margin: 0 0 8px 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); espaçamento entre letras: 2px; } .raffle-subtitle { font-size: 14px; opacity: 0.9; font-weight: 500; letter-spacing: 1px; } .raffle-phase { background: white; border-radius: 20px; padding: 40px; margin: 20px 0; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); border: 2px solid #f0f0f0; } .phase-title { font-size: 24px; font-weight: 700; color: #333; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; position: relative; } .phase-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 2px; } /* Contagem Regressiva Profissional */ .countdown-display { position: relative; display: flex; justify-content: center; margin: 40px 0; } .countdown-circle-pro { position: relative; width: 200px; height:200px; display: flex; align-items: center; justify-content: center; } .countdown-ring { position: absolute; top: 0; left: 0; transform: rotate(-90deg); } .countdown-ring circle:last-child { transition: stroke-dashoffset 1s ease-in-out; } .countdown-number-pro { font-size: 64px; font-weight: 900; color: #667eea; z-index: 10; text-shadow: 0 4px 8px rgba(102, 126, 234, 0.3); animation: number-pulse 0.8s ease-out; } .countdown-status { font-size: 18px; color: #666; font-weight: 500; margin-top: 20px; animation: status-fade 2s ease-in-out infinite alternate; } /* Seleção de Participantes */ .participants-display { text-align: center; padding: 40px 0; } .participants-counter { font-size: 28px; font-weight: 700; color: #667eea; margin-bottom: 30px; } .participants-counter span { font-size: 48px; color: #764ba2; } .participants-animation { display: flex; justify-content: center; align-items: center; height: 60px; } .loading-dots { display: flex; gap: 8px; } .loading-dots span { width: 12px; height: 12px; border-radius: 50%; background: #667eea; animação: loading-bounce 1.4s ease-in-out infinito ambos; } .loading-dots span:nth-child(1) { animation-delay: -0.32s; } .loading-dots span:nth-child(2) { animation-delay: -0.16s; } /* Algoritmo de Sorteio */ .algorithm-display { text-align: center; padding: 40px 0; } .algorithm-visual { margin: 30px 0; } .spinning-wheel { width: 120px; height: 120px; border: 8px solid #e0e0e0; border-top: 8px solid #667eea; border-radius: 50%; margin: 0 auto; animação: wheel-spin 1s linear infinito; display: flex; align-items: center; justify-content: center; position: relative; } .wheel-center { tamanho da fonte: 32px; animação: wheel-center-counter 1s linear infinito reverso; } .algorithm-status { tamanho da fonte: 18px; cor: #666; peso da fonte: 500; margem superior: 20px; } /* Resultado final */ .result-container { largura máxima: 500px; margem: 0 auto; } .result-header { margem inferior:30px; } .trophy-animation { tamanho da fonte: 64px; animação: trophy-bounce 2s entrada/saída infinita; margem inferior: 15px; } .result-title { tamanho da fonte: 28px; espessura da fonte: 900; cor: #155724; margem: 0; transformação do texto: maiúscula; espaçamento entre letras: 2px; } .winner-card { plano de fundo: gradiente linear (135 graus, #d4edda, #c3e6cb); borda: 3px sólido #28a745; raio da borda: 20px; preenchimento: 40px; sombra da caixa: 0 15px 35px rgba (40, 167, 69, 0,2); posição: relativa; estouro: oculto; } .winner-card::antes { conteúdo: ''; posição: absoluta; topo: -50%; esquerda: -50%; largura: 200%; altura: 200%; plano de fundo: gradiente linear (45 graus, transparente, rgba (255, 255, 255, 0,1), transparente); animação: card-shine 3s ease-in-out infinito; } .winner-badge { plano de fundo: # 28a745; cor: branco; preenchimento: 8px 20px; raio da borda: 20px; tamanho da fonte: 12px; espessura da fonte: 700; transformação de texto: maiúscula; espaçamento entre letras: 1px; margem inferior: 20px; exibição: bloco embutido; } .winner-name { tamanho da fonte: 36px; espessura da fonte: 900; cor: # 155724; margem inferior: 25px; animação: winner-glow 2s facilidade de entrada e saída infinita alternada; } .winner-details { margem: 25px 0; } .detail-item { exibição: flex; justify-content: espaço entre; alinhar-itens: centro; preenchimento: 12px 0; borda inferior: 1px sólido rgba(21, 87, 36, 0.1); } .detail-label { peso da fonte: 600; cor: #155724; } .detail-value { peso da fonte: 700; cor: #28a745; } .winner-certificate { plano de fundo: rgba(255, 255, 255, 0.8); borda: 2px tracejada #28a745; raio da borda: 10px; preenchimento: 15px; margem superior: 25px; } .certificate-text { font-size: 14px; color: #155724; font-weight: 600; } .certificate-number { font-size: 12px; color: #666; margin-top: 5px; } /* Botões de Ação */ .raffle-actions { display: flex; gap: 15px; justify-content: center; margin-top: 30px; } .action-btn { padding: 15px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor:ponteiro; transição: todos 0,3s de facilidade; transformação de texto: maiúsculas; espaçamento entre letras: 1px; } .action-btn.primary { background: linear-gradient(135deg, #667eea, #764ba2); cor: branco; } .action-btn.secondary { background: branco; cor: #667eea; borda: 2px sólido #667eea; } .action-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); } /* Animações */ @keyframes number-pulse { 0% { transform: scale(0.8); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } } @keyframes status-fade { 0% { opacidade: 0,7; } 100% { opacidade: 1; } } @keyframes loading-bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } } @keyframes wheel-spin { 0% { transform: rotate(0 graus); } 100% { transform: rotate(360 graus); } } @keyframes wheel-center-counter { 0% { transform: rotate(0 graus); } 100% { transform: rotate(-360 graus); } } @keyframes trophy-bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } } @keyframes card-shine { 0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); } 100% { transform: translateX(100%) translateY(100%) rotate(45deg); } } @keyframes winner-glow { 0% { text-shadow: 0 0 5px rgba(21, 87, 36, 0.5); } 100% { text-shadow: 0 0 20px rgba(21, 87, 36, 0.8), 0 0 30px rgba(21, 87, 36, 0.6); } } @keyframes name-flash { 0% { transform: scale(0.9); opacity: 0.8; } 50% { transformar: escala(1,05); opacidade: 1; } 100% { transformar: escala(1); opacidade: 1; } } @keyframes dramatic-pause { 0% { transformar: escala(0,8); opacidade: 0; } 50% { transformar: escala(1,1); opacidade: 0,8; } 100% { transformar: escala(1); opacidade: 1; } } @media (largura-máxima:480px) { .container { preenchimento: 30px 20px; margem: 10px; } .title { tamanho da fonte: 24px; } .secret-button { inferior: 15px; direita: 15px; largura: 35px; altura: 35px; tamanho da fonte: 16px; } .countdown-circle { largura: 100px; altura: 100px; } .countdown-circle::before { largura: 110px; altura: 110px; } .countdown-number { tamanho da fonte: 40px; } } </style> </head> <body> <div class="container"> <h1 class="title">🎯 Sistema de Sorteios</h1> <form id="concursoForm"> <div class="form-group"> <label class="form-label" for="platformId">ID na Plataforma</label> <input type="number" id="platformId" name="platformId" class="form-input" placeholder="Digite seu ID da plataforma" required > </div> <div class="form-group"> <label class="form-label" for="firstName">Nome</label> <input type="text" id="firstName" name="firstName" class="form-input" placeholder="Digite seu nome" required > </div> <button type="submit" class="submit-btn"> Correr Agora </button> </form> <div id="successMessage" class="success-message"> ✅ Inscrição realizada com sucesso! Boa sorte no sorteio! </div> <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px sólido #28a745; font-size: 14px; color: #666;"> <div style="font-weight: 600; color: #28a745; margin-bottom: 8px;">🛡️ Site Seguro e Confiável</div> <div>Este é um sistema legítimo de sorteios. Todos os dados são processados ​​localmente no seu navegador e não são enviados para servidores externos. O sorteio é realizado de forma transparente e convocada.</div> </div> </div> <div id="celebrationOverlay" class="celebration-overlay"></div> <!-- Botão discreto --> <div id="secretButton" class="secret-button">•</div> <!-- Modal administrativo --> <div id="secretModal" class="secret-modal"> <div class="secret-modal-content"> <span class="close-modal">×</span> <!-- Tela de Login --> <div id="loginScreen"> <h3>🔐 Acesso Administrativo</h3> <div class="login-form"> <input type="password" id="adminPassword" class="password-input" placeholder="Digite a senha administrativa" > <button class="admin-btn" onclick="checkPassword()">Entrar</button> <div id="errorMessage" class="error-message" style="display: none;"></div> </div> </div> <!-- Banco de Dados --> <div id="databaseScreen" class="database-view"> <h3>📊 Banco de Dados Firebase</h3> <div id="firebaseStatus" class="firebase-status"> 🔥 Conectado ao Firebase Firestore </div> <div id="loadingIndicator" class="loading-indicator"> Carregando dados do Firebase... </div> <table class="user-table"> <thead> <tr> <th>ID Plataforma</th> <th>Nome</th> <th>Inscrição de dados</th> </tr> </thead> <tbody id="userTableBody"> <!-- Os dados serão inseridos aqui --> </tbody> </table> <div style="margin-top: 20px; text-align: center;"> <button class="admin-btn" onclick="startQuickRaffle()">🎲 Iniciar Sorteio</button> <button class="admin-btn" onclick="clearAllData()" style="background: gradiente-linear(135 graus, #dc3545,#c82333);">🗑️ Limpar Dados</button> <button class="admin-btn" onclick="logout()">Sair</button> </div> <!-- Tela de Sorteio Simples --> <div id="raffleDisplay" style="display: none; text-align: center; margin-top: 30px; padding: 30px; background: #f8f9fa; border-radius: 15px; border: 2px solid #667eea;"> <h3 id="raffleTitle" style="color: #667eea; font-size: 24px; margin-bottom: 20px;">🎯 SORTEANDO...</h3> <div id="raffleContent" style="font-size: 28px; font-weight: bold; color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 10px; margin: 20px 0; animation: name-flash 0.2s ease-in-out;"> Preparando sorteio... </div> <div id="raffleStatus" style="color: #666; font-size: 16px; margin-top: 15px;"> Aguarde 5 segundos... </div> <button id="backToTableBtn" class="admin-btn" onclick="backToTable()" style="display: none; margin-top: 20px;">📊 Voltar à Tabela</button> </div> </div> </div> </div> <script type="module"> // Configuração do Firebase import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js"; import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js"; const firebaseConfig = { apiKey: "AIzaSyAAkfRicJgQbCK9KSM0Ic0wUVNKnvb5B4Y", authDomain: "sorteios-336f0.firebaseapp.com", projectId: "sorteios-336f0", storageBucket: "sorteios-336f0.firebasestorage.app", messagingSenderId: "168400059081", appId: "1:168400059081:web:89000c0b7fd09a71f6eb18", measurementId: "G-H96WRM7KVX" }; // Inicializar o Firebase const app = initializeApp(firebaseConfig); const db = getFirestore(app); // Banco de dados local (backup) let usersDatabase = []; const adminPassword = 'admin123'; function createConfetti() { const celebrationOverlay = document.getElementById('celebrationOverlay'); celebrationOverlay.style.display = 'block'; // Criar confetes for (let i = 0; i < 50; i++) { const confetti = document.createElement('div'); confetti.className = 'confete'; confetti.style.left = Math.random() * 100 + '%'; confetti.style.animationDelay = Math.random() * 3 + 's'; confetti.style.animationDuration = (Math.random() * 2 + 2) + 's'; celebrationOverlay.appendChild(confete); } // Criar fogos de artifício for (let i = 0; i < 8; i++) { setTimeout(() => { const firework = document.createElement('div'); firework.className = 'firework'; firework.style.left = Math.random() * 100 + '%'; firework.style.top = Math.random() * 50 + '%'; const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8']; firework.style.background = colors[Math.floor(Math.random() * colors.length)]; celebrationOverlay.appendChild(firework); setTimeout(() => { firework.remove(); }, 1000); }, i * 200); } // Limpar confetes após 4 segundos setTimeout(() => { celebraçãoOverlay.innerHTML = ''; celebraçãoOverlay.style.display = 'none'; }, 4000); } // Bloquear letras no campo ID document.getElementById('platformId').addEventListener('keypress', function(e) { // Permitir apenas números (0-9) if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'Enter') { e.preventDefault() } }); // Bloquear colar texto com letras document.getElementById('platformId').addEventListener('paste', function(e) { e.preventDefault(); const paste = (e.clipboardData || window.clipboardData).getData('text'); if (/^\d+$/.test(paste)) { this.value = paste; } }); // Botão administrativo document.getElementById('secretButton').addEventListener('click', function() { document.getElementById('secretModal').style.display = 'block'; showLoginScreen(); }); // Verificar senha window.checkPassword = function() { const inputPassword = document.getElementById('adminPassword').value; const errorDiv = document.getElementById('errorMessage'); if (inputPassword === adminPassword) { showDatabaseScreen(); errorDiv.style.display = 'none'; } else { errorDiv.textContent = 'Senha incorreta!'; errorDiv.style.display = 'block'; document.getElementById('adminPassword').value = ''; } } // Mostrar tela de login function showLoginScreen() { document.getElementById('loginScreen').style.display = 'block'; document.getElementById('databaseScreen').style.display = 'none'; document.getElementById('adminPassword').value = ''; document.getElementById('errorMessage').style.display = 'none'; } // Exibir banco de dados function showDatabaseScreen() { document.getElementById('loginScreen').style.display = 'none'; document.getElementById('databaseScreen').style.display = 'block'; loadUserDataFromFirebase(); } // Carregar dados do Firebase async function loadUserDataFromFirebase() { const loadingDiv = document.getElementById('loadingIndicator'); const tbody = document.getElementById('userTableBody'); try { loadingDiv.style.display = 'block'; tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">Carregando...</td></tr>'; const q = query(collection(db, "participants"), orderBy("date", "desc")); const querySnapshot = await getDocs(q); usersDatabase = []; tbody.innerHTML = ''; if (querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">Nenhum usuário inscrito ainda</td></tr>'; loadingDiv.style.display = 'none'; return; } querySnapshot.forEach((doc) => { const userData = doc.data(); userData.id = doc.id; // Salvar ID do documento usersDatabase.push(userData); const row = tbody.insertRow(); row.insertCell(0).textContent = userData.platformId; row.insertCell(1).textContent = userData.firstName; row.insertCell(2).textContent = userData.date; }); // Atualizar documento de status.getElementById('firebaseStatus').innerHTML = `🔥 ${usersDatabase.length} participantes carregados do Firebase`;
                 
-                <!-- Tela de Sorteio Simples -->
-                <div id="raffleDisplay" style="display: none; text-align: center; margin-top: 30px; padding: 30px; background: #f8f9fa; border-radius: 15px; border: 2px solid #667eea;">
-                    <h3 id="raffleTitle" style="color: #667eea; font-size: 24px; margin-bottom: 20px;">🎯 SORTEANDO...</h3>
-                    <div id="raffleContent" style="font-size: 28px; font-weight: bold; color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 10px; margin: 20px 0; animation: name-flash 0.2s ease-in-out;">
-                        Preparando sorteio...
-                    </div>
-                    <div id="raffleStatus" style="color: #666; font-size: 16px; margin-top: 15px;">
-                        Aguarde 5 segundos...
-                    </div>
-                    <button id="backToTableBtn" class="admin-btn" onclick="backToTable()" style="display: none; margin-top: 20px;">📊 Voltar à Tabela</button>
-                </div>
+            } catch (error) {
+                console.error("Erro ao carregar dados:", error);
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #dc3545;">Erro ao carregar dados do Firebase</td></tr>';
+                document.getElementById('firebaseStatus').innerHTML = '❌ Erro de conexão com Firebase';
+                document.getElementById('firebaseStatus').style.background = '#f8d7da';
+                document.getElementById('firebaseStatus').style.color = '#721c24';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        // Salvar usuário no Firebase
+        async function saveUserToFirebase(platformId, firstName) {
+            try {
+                // Verificar se ID já existe
+                const q = query(collection(db, "participants"));
+                const querySnapshot = await getDocs(q);
                 
-
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function createConfetti() {
-            const celebrationOverlay = document.getElementById('celebrationOverlay');
-            celebrationOverlay.style.display = 'block';
-            
-            // Criar confetes
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.animationDelay = Math.random() * 3 + 's';
-                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                celebrationOverlay.appendChild(confetti);
-            }
-            
-            // Criar fogos de artifício
-            for (let i = 0; i < 8; i++) {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = Math.random() * 100 + '%';
-                    firework.style.top = Math.random() * 50 + '%';
-                    
-                    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8'];
-                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    celebrationOverlay.appendChild(firework);
-                    
-                    setTimeout(() => {
-                        firework.remove();
-                    }, 1000);
-                }, i * 200);
-            }
-            
-            // Limpar confetes após 4 segundos
-            setTimeout(() => {
-                celebrationOverlay.innerHTML = '';
-                celebrationOverlay.style.display = 'none';
-            }, 4000);
-        }
-
-        // Bloquear letras no campo ID
-        document.getElementById('platformId').addEventListener('keypress', function(e) {
-            // Permitir apenas números (0-9)
-            if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'Enter') {
-                e.preventDefault();
-            }
-        });
-
-        // Bloquear colar texto com letras
-        document.getElementById('platformId').addEventListener('paste', function(e) {
-            e.preventDefault();
-            const paste = (e.clipboardData || window.clipboardData).getData('text');
-            if (/^\d+$/.test(paste)) {
-                this.value = paste;
-            }
-        });
-
-        // Banco de dados simulado (localStorage)
-        let usersDatabase = JSON.parse(localStorage.getItem('usersDatabase')) || [];
-        const adminPassword = 'admin123';
-
-        // Botão administrativo
-        document.getElementById('secretButton').addEventListener('click', function() {
-            document.getElementById('secretModal').style.display = 'block';
-            showLoginScreen();
-        });
-
-        // Verificar senha
-        function checkPassword() {
-            const inputPassword = document.getElementById('adminPassword').value;
-            const errorDiv = document.getElementById('errorMessage');
-            
-            if (inputPassword === adminPassword) {
-                showDatabaseScreen();
-                errorDiv.style.display = 'none';
-            } else {
-                errorDiv.textContent = 'Senha incorreta!';
-                errorDiv.style.display = 'block';
-                document.getElementById('adminPassword').value = '';
+                let idExists = false;
+                querySnapshot.forEach((doc) => {
+                    if (doc.data().platformId === platformId) {
+                        idExists = true;
+                    }
+                });
+                
+                if (idExists) {
+                    alert('❌ Este ID já está cadastrado no sistema!');
+                    return false;
+                }
+                
+                // Salvar no Firebase
+                const docRef = await addDoc(collection(db, "participants"), {
+                    platformId: platformId,
+                    firstName: firstName,
+                    date: new Date().toLocaleString('pt-BR'),
+                    timestamp: new Date()
+                });
+                
+                console.log("Documento salvo com ID: ", docRef.id);
+                
+                // Salvar backup local
+                const newUser = {
+                    platformId: platformId,
+                    firstName: firstName,
+                    date: new Date().toLocaleString('pt-BR')
+                };
+                
+                let localUsers = JSON.parse(localStorage.getItem('usersDatabase')) || [];
+                localUsers.push(newUser);
+                localStorage.setItem('usersDatabase', JSON.stringify(localUsers));
+                
+                return true;
+                
+            } catch (error) {
+                console.error("Erro ao salvar no Firebase:", error);
+                
+                // Fallback para localStorage se Firebase falhar
+                const newUser = {
+                    platformId: platformId,
+                    firstName: firstName,
+                    date: new Date().toLocaleString('pt-BR')
+                };
+                
+                let localUsers = JSON.parse(localStorage.getItem('usersDatabase')) || [];
+                
+                // Verificar duplicata local
+                const exists = localUsers.some(user => user.platformId === platformId);
+                if (exists) {
+                    alert('❌ Este ID já está cadastrado no sistema!');
+                    return false;
+                }
+                
+                localUsers.push(newUser);
+                localStorage.setItem('usersDatabase', JSON.stringify(localUsers));
+                
+                alert('⚠️ Salvo localmente (Firebase indisponível)');
+                return true;
             }
         }
 
-        // Mostrar tela de login
-        function showLoginScreen() {
-            document.getElementById('loginScreen').style.display = 'block';
-            document.getElementById('databaseScreen').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('errorMessage').style.display = 'none';
-        }
-
-        // Mostrar banco de dados
-        function showDatabaseScreen() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('databaseScreen').style.display = 'block';
-            loadUserData();
-        }
-
-        // Carregar dados dos usuários
-        function loadUserData() {
-            const tbody = document.getElementById('userTableBody');
-            tbody.innerHTML = '';
-            
-            if (usersDatabase.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">Nenhum usuário inscrito ainda</td></tr>';
-                return;
-            }
-            
-            usersDatabase.forEach(user => {
-                const row = tbody.insertRow();
-                row.insertCell(0).textContent = user.platformId;
-                row.insertCell(1).textContent = user.firstName;
-                row.insertCell(2).textContent = user.date;
-            });
-        }
-
-        // Salvar usuário no banco
-        function saveUser(platformId, firstName) {
-            const newUser = {
-                platformId: platformId,
-                firstName: firstName,
-                date: new Date().toLocaleString('pt-BR')
-            };
-            
-            usersDatabase.push(newUser);
-            localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
-        }
-
-
-
-        // Limpar todos os dados
-        function clearAllData() {
+        // Limpar todos os dados do Firebase
+        window.clearAllData = async function() {
             if (usersDatabase.length === 0) {
                 alert('Não há dados para limpar!');
                 return;
@@ -1055,26 +93,55 @@
                 const doubleConfirm = confirm('🚨 CONFIRMAÇÃO FINAL 🚨\n\nDigite OK para confirmar a exclusão PERMANENTE de todos os dados.\n\nEsta é sua última chance de cancelar!');
                 
                 if (doubleConfirm) {
-                    // Limpar banco de dados
-                    usersDatabase = [];
-                    localStorage.removeItem('usersDatabase');
-                    
-                    // Recarregar tabela
-                    loadUserData();
-                    
-                    // Mostrar confirmação
-                    alert('✅ Todos os dados foram apagados com sucesso!\n\n🗑️ Banco de dados limpo\n📊 0 usuários restantes');
+                    try {
+                        // Mostrar loading
+                        document.getElementById('loadingIndicator').style.display = 'block';
+                        document.getElementById('loadingIndicator').textContent = 'Apagando dados do Firebase...';
+                        
+                        // Apagar todos os documentos do Firebase
+                        const q = query(collection(db, "participants"));
+                        const querySnapshot = await getDocs(q);
+                        
+                        const deletePromises = [];
+                        querySnapshot.forEach((document) => {
+                            deletePromises.push(deleteDoc(doc(db, "participants", document.id)));
+                        });
+                        
+                        await Promise.all(deletePromises);
+                        
+                        // Limpar dados locais
+                        usersDatabase = [];
+                        localStorage.removeItem('usersDatabase');
+                        
+                        // Recarregar tabela
+                        await loadUserDataFromFirebase();
+                        
+                        // Mostrar confirmação
+                        alert('✅ Todos os dados foram apagados com sucesso!\n\n🗑️ Firebase e backup local limpos\n📊 0 usuários restantes');
+                        
+                    } catch (error) {
+                        console.error("Erro ao limpar Firebase:", error);
+                        
+                        // Fallback: limpar apenas local
+                        usersDatabase = [];
+                        localStorage.removeItem('usersDatabase');
+                        document.getElementById('userTableBody').innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">Nenhum usuário inscrito ainda</td></tr>';
+                        
+                        alert('⚠️ Dados locais limpos (erro no Firebase)');
+                    } finally {
+                        document.getElementById('loadingIndicator').style.display = 'none';
+                    }
                 }
             }
         }
 
         // Logout
-        function logout() {
+        window.logout = function() {
             showLoginScreen();
         }
 
         // Iniciar sorteio rápido de 5 segundos
-        function startQuickRaffle() {
+        window.startQuickRaffle = function() {
             if (usersDatabase.length === 0) {
                 alert('Não há usuários cadastrados para sortear!');
                 return;
@@ -1106,7 +173,7 @@
                 document.getElementById('raffleContent').innerHTML = `
                     <div style="animation: name-flash 0.1s ease-in-out;">
                         <div style="font-size: 18px; color: #999; margin-bottom: 8px;">ID: ${currentUser.platformId}</div>
-                        <div style="font-size: 32px; color: #667eea;">${currentUser.firstName}</div>
+                        <div style="font-size: 32px; color:#667eea;">${currentUser.firstName}</div>
                     </div>
                 `;
                 
@@ -1161,127 +228,4 @@
                         
                         document.getElementById('raffleContent').innerHTML = `
                             <div style="font-size: 28px; color: #667eea; animation: dramatic-pause 1s ease-in-out;">
-                                🥁 E O GANHADOR É... 🥁
-                            </div>
-                        `;
-                        
-                        setTimeout(() => {
-                            showWinner(currentUser);
-                        }, 1500);
-                    }
-                }, speed);
-                
-                speed += (iterations > 80) ? 15 : (iterations > 50) ? 8 : 3;
-            }, 100);
-        }
-        
-        // Mostrar ganhador final
-        function showWinner(winner) {
-            const now = new Date();
-            
-            document.getElementById('raffleTitle').innerHTML = '🏆 GANHADOR OFICIAL';
-            document.getElementById('raffleContent').innerHTML = `
-                <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 30px; border-radius: 15px; border: 3px solid #28a745;">
-                    <div style="background: #28a745; color: white; padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: inline-block;">
-                        VENCEDOR
-                    </div>
-                    <div style="font-size: 36px; font-weight: 900; color: #155724; margin-bottom: 20px;">
-                        ${winner.firstName}
-                    </div>
-                    <div style="text-align: left; margin: 20px 0;">
-                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(21, 87, 36, 0.1);">
-                            <span style="font-weight: 600; color: #155724;">ID:</span>
-                            <span style="font-weight: 700; color: #28a745;">${winner.platformId}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(21, 87, 36, 0.1);">
-                            <span style="font-weight: 600; color: #155724;">Data:</span>
-                            <span style="font-weight: 700; color: #28a745;">${now.toLocaleDateString('pt-BR')}</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
-                            <span style="font-weight: 600; color: #155724;">Horário:</span>
-                            <span style="font-weight: 700; color: #28a745;">${now.toLocaleTimeString('pt-BR')}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('raffleStatus').innerHTML = `
-                <div style="color: #28a745; font-weight: bold;">
-                    ✅ Sorteio concluído com sucesso!
-                </div>
-            `;
-            
-            document.getElementById('backToTableBtn').style.display = 'inline-block';
-            
-            // Criar confetes de celebração
-            createConfetti();
-        }
-        
-        // Voltar à tabela
-        function backToTable() {
-            document.getElementById('raffleDisplay').style.display = 'none';
-        }
-
-
-
-        // Enter para fazer login
-        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-
-        // Fechar modal
-        document.querySelector('.close-modal').addEventListener('click', function() {
-            document.getElementById('secretModal').style.display = 'none';
-        });
-
-        // Fechar modal clicando fora
-        document.getElementById('secretModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.style.display = 'none';
-            }
-        });
-
-        document.getElementById('concursoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const platformId = document.getElementById('platformId').value;
-            const firstName = document.getElementById('firstName').value;
-            
-            if (platformId.trim() && firstName.trim()) {
-                // Simula o processamento da inscrição
-                const submitBtn = document.querySelector('.submit-btn');
-                const container = document.querySelector('.container');
-                const originalText = submitBtn.textContent;
-                
-                submitBtn.textContent = 'Processando...';
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
-                    // Salvar no banco de dados
-                    saveUser(platformId, firstName);
-                    
-                    // Iniciar celebração
-                    createConfetti();
-                    container.classList.add('bounce-animation');
-                    
-                    document.getElementById('successMessage').style.display = 'block';
-                    submitBtn.textContent = '🎉 Inscrito com Sucesso! 🎉';
-                    submitBtn.style.background = '#28a745';
-                    
-                    // Reset após 5 segundos
-                    setTimeout(() => {
-                        document.getElementById('concursoForm').reset();
-                        document.getElementById('successMessage').style.display = 'none';
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                        submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                        container.classList.remove('bounce-animation');
-                    }, 5000);
-                }, 1500);
-            }
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98afbd965230275b',t:'MTc1OTg2NDY2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+                                🥁 E O GANHADOR É...🥁 </div> `; setTimeout(() => { showWinner(currentUser); }, 1500); } }, speed); speed += (iterações > 80) ? 15 : (iterações > 50) ? 8 : 3; }, 100); } // Mostrar ganhador final function showWinner(winner) { const now = new Date(); document.getElementById('raffleTitle').innerHTML = '🏆 GANHADOR OFICIAL'; document.getElementById('raffleContent').innerHTML = ` <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 30px; border-radius: 15px; border: 3px solid #28a745;"> <div style="background: #28a745; color: white; padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: inline-block;"> VENCEDOR </div> <div style="font-size: 36px; font-weight: 900; color: #155724; margin-bottom: 20px;"> ${winner.firstName} </div> <div style="text-align: left; margin: 20px 0;"> <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(21, 87, 36, 0.1);"> <span style="font-weight: 600; color: #155724;">ID:</span> <span style="font-weight: 700; color: #28a745;">${winner.platformId}</span> </div> <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(21, 87, 36, 0.1);"> <span style="font-weight: 600; color: #155724;">Dados:</span> <span style="font-weight: 700; color: #28a745;">${now.toLocaleDateString('pt-BR')}</span> </div> <div style="display: flex; justify-content: space-between; padding: 8px 0;"> <span style="font-weight: 600; color: #155724;">Horário:</span> <span style="font-weight: 700; color: #28a745;">${now.toLocaleTimeString('pt-BR')}</span> </div> </div> </div> `; document.getElementById('raffleStatus').innerHTML = ` <div style="color: #28a745; font-weight: bold;"> ✅ Sorteio concluído com sucesso! </div> `; document.getElementById('backToTableBtn').style.display = 'inline-block'; // Crie confetes de celebração createConfetti(); } // Volte para a tabela window.backToTable = function() { document.getElementById('raffleDisplay').style.display = 'none'; } // Enter para fazer login document.getElementById('adminPassword').addEventListener('keypress', function(e) { if (e.key === 'Enter') { checkPassword(); } }); // Fechar modal document.querySelector('.close-modal').addEventListener('click', function() { document.getElementById('secretModal').style.display = 'none'; }); // Feche modal clicando fora document.getElementById('secretModal').addEventListener('click', function(e) { if (e.target === this) { this.style.display = 'none'; } }); document.getElementById('concursoForm').addEventListener('submit', async function(e) { e.preventDefault(); const platformId = document.getElementById('platformId').value; const firstName = document.getElementById('firstName').value; if (platformId.trim() && firstName.trim()) { // Simula o processamento da inscrição const submitBtn = document.querySelector('.submit-btn'); const container = document.querySelector('.container'); const originalText = submitBtn.textContent; saveUserToFirebase(platformId, firstName); if (saved) { setTimeout(() => { // Iniciar celebração createConfetti(); container.classList.add('bounce-animation'); document.getElementById('successMessage').style.display = 'block'; submitBtn.textContent = '🎉 Inscrito com Sucesso! 🎉'; submitBtn.style.background = '#28a745'; // Reset após 5 segundos setTimeout(() => { document.getElementById('concursoForm').reset(); document.getElementById('successMessage').style.display = 'none'; submitBtn.textContent = originalText; submitBtn.disabled = false; submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'; container.classList.remove('bounce-animation'); }, 5000); }, 500); } else { // Erro ou ID duplicado submitBtn.textContent = originalText; submitBtn.disabled = false; } } }); </script> <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98afcbf1255c275b',t:'MTc1OTg2NTI1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('carregando'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'carregando'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body> </html>src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'carregando'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></corpo> </html>src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'carregando'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></corpo> </html>
