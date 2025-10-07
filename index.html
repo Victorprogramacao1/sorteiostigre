@@ -878,6 +878,7 @@
                 </table>
                 <div style="margin-top: 20px; text-align: center;">
                     <button class="admin-btn" onclick="startQuickRaffle()">🎲 Iniciar Sorteio</button>
+                    <button class="admin-btn" onclick="clearAllData()" style="background: linear-gradient(135deg, #dc3545, #c82333);">🗑️ Limpar Dados</button>
                     <button class="admin-btn" onclick="logout()">Sair</button>
                 </div>
                 
@@ -1028,6 +1029,32 @@
 
 
 
+        // Limpar todos os dados
+        function clearAllData() {
+            if (usersDatabase.length === 0) {
+                alert('Não há dados para limpar!');
+                return;
+            }
+            
+            const confirmDelete = confirm(`⚠️ ATENÇÃO!\n\nVocê tem certeza que deseja APAGAR TODOS OS DADOS?\n\n📊 Total de usuários: ${usersDatabase.length}\n\n⚠️ Esta ação NÃO PODE ser desfeita!`);
+            
+            if (confirmDelete) {
+                const doubleConfirm = confirm('🚨 CONFIRMAÇÃO FINAL 🚨\n\nDigite OK para confirmar a exclusão PERMANENTE de todos os dados.\n\nEsta é sua última chance de cancelar!');
+                
+                if (doubleConfirm) {
+                    // Limpar banco de dados
+                    usersDatabase = [];
+                    localStorage.removeItem('usersDatabase');
+                    
+                    // Recarregar tabela
+                    loadUserData();
+                    
+                    // Mostrar confirmação
+                    alert('✅ Todos os dados foram apagados com sucesso!\n\n🗑️ Banco de dados limpo\n📊 0 usuários restantes');
+                }
+            }
+        }
+
         // Logout
         function logout() {
             showLoginScreen();
@@ -1049,13 +1076,13 @@
             document.getElementById('raffleDisplay').style.display = 'block';
             document.getElementById('raffleTitle').textContent = '🎯 SORTEANDO...';
             document.getElementById('raffleContent').textContent = 'Preparando sorteio...';
-            document.getElementById('raffleStatus').textContent = 'Aguarde 5 segundos...';
+            document.getElementById('raffleStatus').textContent = 'Aguarde 6 segundos...';
             document.getElementById('backToTableBtn').style.display = 'none';
             
             let currentIndex = 0;
             let speed = 50; // Velocidade inicial (ms)
             let iterations = 0;
-            const maxIterations = 100; // Total de iterações em 5 segundos
+            const maxIterations = 120; // Total de iterações em 6 segundos
             
             const raffleInterval = setInterval(() => {
                 // Selecionar usuário aleatório
@@ -1073,11 +1100,11 @@
                 iterations++;
                 
                 // Diminuir velocidade gradualmente para criar suspense
-                if (iterations > 60) {
+                if (iterations > 80) {
                     speed += 15; // Desacelerar mais rápido no final
-                } else if (iterations > 30) {
+                } else if (iterations > 50) {
                     speed += 8; // Desacelerar moderadamente
-                } else if (iterations > 15) {
+                } else if (iterations > 25) {
                     speed += 3; // Desacelerar levemente
                 }
                 
@@ -1131,7 +1158,7 @@
                     }
                 }, speed);
                 
-                speed += (iterations > 60) ? 15 : (iterations > 30) ? 8 : 3;
+                speed += (iterations > 80) ? 15 : (iterations > 50) ? 8 : 3;
             }, 100);
         }
         
@@ -1243,5 +1270,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98afb25b60d0275b',t:'MTc1OTg2NDIwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98afb8d367f2275b',t:'MTc1OTg2NDQ3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
