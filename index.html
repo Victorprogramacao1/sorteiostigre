@@ -731,6 +731,36 @@
             }
         }
 
+        @keyframes name-flash {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes dramatic-pause {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 30px 20px;
@@ -847,106 +877,23 @@
                     </tbody>
                 </table>
                 <div style="margin-top: 20px; text-align: center;">
-                    <button class="admin-btn" onclick="startRaffle()">🎲 Realizar Sorteio</button>
-                    <button class="admin-btn" onclick="exportData()">Exportar Dados</button>
-                    <button class="admin-btn" onclick="clearDatabase()">Limpar Banco</button>
+                    <button class="admin-btn" onclick="startQuickRaffle()">🎲 Iniciar Sorteio</button>
                     <button class="admin-btn" onclick="logout()">Sair</button>
                 </div>
                 
-                <!-- Tela de Sorteio Profissional -->
-                <div id="raffleScreen" style="display: none; text-align: center; margin-top: 20px;">
-                    <!-- Header do Sorteio -->
-                    <div class="raffle-header">
-                        <h2 class="raffle-title">🎯 SORTEIO OFICIAL</h2>
-                        <div class="raffle-subtitle">Sistema de Sorteio Aleatório Certificado</div>
+                <!-- Tela de Sorteio Simples -->
+                <div id="raffleDisplay" style="display: none; text-align: center; margin-top: 30px; padding: 30px; background: #f8f9fa; border-radius: 15px; border: 2px solid #667eea;">
+                    <h3 id="raffleTitle" style="color: #667eea; font-size: 24px; margin-bottom: 20px;">🎯 SORTEANDO...</h3>
+                    <div id="raffleContent" style="font-size: 28px; font-weight: bold; color: #333; min-height: 80px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 10px; margin: 20px 0; animation: name-flash 0.2s ease-in-out;">
+                        Preparando sorteio...
                     </div>
-                    
-                    <!-- Fase 1: Contagem Regressiva -->
-                    <div id="countdownPhase" class="raffle-phase">
-                        <div class="phase-title">PREPARANDO SORTEIO</div>
-                        <div class="countdown-display">
-                            <div class="countdown-circle-pro">
-                                <div id="countdownNumber" class="countdown-number-pro">5</div>
-                                <svg class="countdown-ring" width="200" height="200">
-                                    <circle cx="100" cy="100" r="90" stroke="#e0e0e0" stroke-width="8" fill="none"/>
-                                    <circle id="countdownProgress" cx="100" cy="100" r="90" stroke="#667eea" stroke-width="8" fill="none" 
-                                            stroke-dasharray="565.48" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div id="countdownStatus" class="countdown-status">Inicializando sistema...</div>
+                    <div id="raffleStatus" style="color: #666; font-size: 16px; margin-top: 15px;">
+                        Aguarde 5 segundos...
                     </div>
-                    
-                    <!-- Fase 2: Seleção de Participantes -->
-                    <div id="selectionPhase" class="raffle-phase" style="display: none;">
-                        <div class="phase-title">SELECIONANDO PARTICIPANTES</div>
-                        <div class="participants-display">
-                            <div class="participants-counter">
-                                <span id="participantCount">0</span> participantes carregados
-                            </div>
-                            <div class="participants-animation">
-                                <div class="loading-dots">
-                                    <span></span><span></span><span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Fase 3: Algoritmo de Sorteio -->
-                    <div id="algorithmPhase" class="raffle-phase" style="display: none;">
-                        <div class="phase-title">EXECUTANDO ALGORITMO</div>
-                        <div class="algorithm-display">
-                            <div class="algorithm-visual">
-                                <div class="spinning-wheel">
-                                    <div class="wheel-center">🎲</div>
-                                </div>
-                            </div>
-                            <div class="algorithm-status">Processando seleção aleatória...</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Fase 4: Resultado Final -->
-                    <div id="resultPhase" class="raffle-phase" style="display: none;">
-                        <div class="result-container">
-                            <div class="result-header">
-                                <div class="trophy-animation">🏆</div>
-                                <h3 class="result-title">GANHADOR OFICIAL</h3>
-                            </div>
-                            <div class="winner-card">
-                                <div class="winner-badge">VENCEDOR</div>
-                                <div id="winnerName" class="winner-name">Nome do Ganhador</div>
-                                <div id="winnerDetails" class="winner-details">
-                                    <div class="detail-item">
-                                        <span class="detail-label">ID:</span>
-                                        <span id="winnerId" class="detail-value">000000</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Data do Sorteio:</span>
-                                        <span id="raffleDate" class="detail-value">--/--/----</span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Horário:</span>
-                                        <span id="raffleTime" class="detail-value">--:--:--</span>
-                                    </div>
-                                </div>
-                                <div class="winner-certificate">
-                                    <div class="certificate-text">Certificado de Sorteio Válido</div>
-                                    <div class="certificate-number">Nº <span id="certificateNumber">000000</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Botões de Ação -->
-                    <div class="raffle-actions">
-                        <button id="backBtn" class="action-btn primary" onclick="backToDatabase()" style="display: none;">
-                            📊 Voltar ao Painel
-                        </button>
-                        <button id="newRaffleBtn" class="action-btn secondary" onclick="startNewRaffle()" style="display: none;">
-                            🎲 Novo Sorteio
-                        </button>
-                    </div>
+                    <button id="backToTableBtn" class="admin-btn" onclick="backToTable()" style="display: none; margin-top: 20px;">📊 Voltar à Tabela</button>
                 </div>
+                
+
             </div>
         </div>
     </div>
@@ -1079,44 +1026,15 @@
             localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
         }
 
-        // Exportar dados
-        function exportData() {
-            if (usersDatabase.length === 0) {
-                alert('Não há dados para exportar!');
-                return;
-            }
-            
-            let csvContent = 'ID Plataforma,Nome,Data Inscrição\n';
-            usersDatabase.forEach(user => {
-                csvContent += `${user.platformId},${user.firstName},${user.date}\n`;
-            });
-            
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'usuarios_inscritos.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
 
-        // Limpar banco de dados
-        function clearDatabase() {
-            if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita!')) {
-                usersDatabase = [];
-                localStorage.removeItem('usersDatabase');
-                loadUserData();
-                alert('Banco de dados limpo com sucesso!');
-            }
-        }
 
         // Logout
         function logout() {
             showLoginScreen();
         }
 
-        // Iniciar sorteio profissional
-        function startRaffle() {
+        // Iniciar sorteio rápido de 5 segundos
+        function startQuickRaffle() {
             if (usersDatabase.length === 0) {
                 alert('Não há usuários cadastrados para sortear!');
                 return;
@@ -1128,186 +1046,143 @@
             }
             
             // Mostrar tela de sorteio
-            document.getElementById('databaseScreen').style.display = 'none';
-            document.getElementById('raffleScreen').style.display = 'block';
+            document.getElementById('raffleDisplay').style.display = 'block';
+            document.getElementById('raffleTitle').textContent = '🎯 SORTEANDO...';
+            document.getElementById('raffleContent').textContent = 'Preparando sorteio...';
+            document.getElementById('raffleStatus').textContent = 'Aguarde 5 segundos...';
+            document.getElementById('backToTableBtn').style.display = 'none';
             
-            // Reset todas as fases
-            resetRafflePhases();
+            let currentIndex = 0;
+            let speed = 50; // Velocidade inicial (ms)
+            let iterations = 0;
+            const maxIterations = 100; // Total de iterações em 5 segundos
             
-            // Iniciar Fase 1: Contagem Regressiva
-            startCountdownPhase();
-        }
-        
-        function resetRafflePhases() {
-            document.getElementById('countdownPhase').style.display = 'block';
-            document.getElementById('selectionPhase').style.display = 'none';
-            document.getElementById('algorithmPhase').style.display = 'none';
-            document.getElementById('resultPhase').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'none';
-            document.getElementById('newRaffleBtn').style.display = 'none';
-        }
-        
-        function startCountdownPhase() {
-            let countdown = 5;
-            const countdownNumber = document.getElementById('countdownNumber');
-            const countdownStatus = document.getElementById('countdownStatus');
-            const progressCircle = document.getElementById('countdownProgress');
-            
-            const circumference = 2 * Math.PI * 90; // raio = 90
-            progressCircle.style.strokeDasharray = circumference;
-            progressCircle.style.strokeDashoffset = 0;
-            
-            countdownNumber.textContent = countdown;
-            countdownStatus.textContent = 'Inicializando sistema de sorteio...';
-            
-            const statusMessages = [
-                'Verificando integridade dos dados...',
-                'Carregando algoritmo de aleatoriedade...',
-                'Preparando ambiente seguro...',
-                'Validando participantes...',
-                'Iniciando processo de seleção...'
-            ];
-            
-            const countdownInterval = setInterval(() => {
-                countdown--;
+            const raffleInterval = setInterval(() => {
+                // Selecionar usuário aleatório
+                currentIndex = Math.floor(Math.random() * usersDatabase.length);
+                const currentUser = usersDatabase[currentIndex];
                 
-                // Animar número
-                countdownNumber.style.animation = 'none';
-                setTimeout(() => {
-                    countdownNumber.style.animation = 'number-pulse 0.8s ease-out';
-                    countdownNumber.textContent = countdown;
-                }, 50);
+                // Mostrar usuário atual
+                document.getElementById('raffleContent').innerHTML = `
+                    <div style="animation: name-flash 0.1s ease-in-out;">
+                        <div style="font-size: 18px; color: #999; margin-bottom: 8px;">ID: ${currentUser.platformId}</div>
+                        <div style="font-size: 32px; color: #667eea;">${currentUser.firstName}</div>
+                    </div>
+                `;
                 
-                // Atualizar progresso circular
-                const progress = (countdown / 5) * circumference;
-                progressCircle.style.strokeDashoffset = circumference - progress;
+                iterations++;
                 
-                // Atualizar status
-                if (countdown > 0) {
-                    countdownStatus.textContent = statusMessages[5 - countdown];
+                // Diminuir velocidade gradualmente para criar suspense
+                if (iterations > 60) {
+                    speed += 15; // Desacelerar mais rápido no final
+                } else if (iterations > 30) {
+                    speed += 8; // Desacelerar moderadamente
+                } else if (iterations > 15) {
+                    speed += 3; // Desacelerar levemente
                 }
                 
-                if (countdown === 0) {
-                    clearInterval(countdownInterval);
+                // Parar após aproximadamente 5 segundos
+                if (iterations >= maxIterations) {
+                    clearInterval(raffleInterval);
+                    
+                    // Pausa dramática antes de mostrar o ganhador
+                    document.getElementById('raffleContent').innerHTML = `
+                        <div style="font-size: 28px; color: #667eea; animation: dramatic-pause 1s ease-in-out;">
+                            🥁 E O GANHADOR É... 🥁
+                        </div>
+                    `;
+                    
                     setTimeout(() => {
-                        startSelectionPhase();
-                    }, 500);
-                }
-            }, 1000);
-        }
-        
-        function startSelectionPhase() {
-            document.getElementById('countdownPhase').style.display = 'none';
-            document.getElementById('selectionPhase').style.display = 'block';
-            
-            const participantCounter = document.getElementById('participantCount');
-            let count = 0;
-            
-            const loadingInterval = setInterval(() => {
-                count++;
-                participantCounter.textContent = count;
-                
-                if (count >= usersDatabase.length) {
-                    clearInterval(loadingInterval);
-                    setTimeout(() => {
-                        startAlgorithmPhase();
+                        showWinner(currentUser);
                     }, 1500);
                 }
-            }, 200);
+            }, speed);
+            
+            // Ajustar intervalo dinamicamente
+            let speedAdjuster = setInterval(() => {
+                clearInterval(raffleInterval);
+                
+                const newInterval = setInterval(() => {
+                    currentIndex = Math.floor(Math.random() * usersDatabase.length);
+                    const currentUser = usersDatabase[currentIndex];
+                    
+                    document.getElementById('raffleContent').innerHTML = `
+                        <div style="animation: name-flash 0.1s ease-in-out;">
+                            <div style="font-size: 18px; color: #999; margin-bottom: 8px;">ID: ${currentUser.platformId}</div>
+                            <div style="font-size: 32px; color: #667eea;">${currentUser.firstName}</div>
+                        </div>
+                    `;
+                    
+                    iterations++;
+                    
+                    if (iterations >= maxIterations) {
+                        clearInterval(newInterval);
+                        clearInterval(speedAdjuster);
+                        
+                        document.getElementById('raffleContent').innerHTML = `
+                            <div style="font-size: 28px; color: #667eea; animation: dramatic-pause 1s ease-in-out;">
+                                🥁 E O GANHADOR É... 🥁
+                            </div>
+                        `;
+                        
+                        setTimeout(() => {
+                            showWinner(currentUser);
+                        }, 1500);
+                    }
+                }, speed);
+                
+                speed += (iterations > 60) ? 15 : (iterations > 30) ? 8 : 3;
+            }, 100);
         }
         
-        function startAlgorithmPhase() {
-            document.getElementById('selectionPhase').style.display = 'none';
-            document.getElementById('algorithmPhase').style.display = 'block';
-            
-            // Simular processamento do algoritmo por 3 segundos
-            setTimeout(() => {
-                showFinalResult();
-            }, 3000);
-        }
-        
-        function showFinalResult() {
-            // Selecionar ganhador aleatório
-            const winnerIndex = Math.floor(Math.random() * usersDatabase.length);
-            const winner = usersDatabase[winnerIndex];
-            
-            // Gerar dados do certificado
+        // Mostrar ganhador final
+        function showWinner(winner) {
             const now = new Date();
-            const certificateNumber = Math.floor(Math.random() * 900000) + 100000;
             
-            // Preencher dados do ganhador
-            document.getElementById('winnerName').textContent = winner.firstName;
-            document.getElementById('winnerId').textContent = winner.platformId;
-            document.getElementById('raffleDate').textContent = now.toLocaleDateString('pt-BR');
-            document.getElementById('raffleTime').textContent = now.toLocaleTimeString('pt-BR');
-            document.getElementById('certificateNumber').textContent = certificateNumber;
+            document.getElementById('raffleTitle').innerHTML = '🏆 GANHADOR OFICIAL';
+            document.getElementById('raffleContent').innerHTML = `
+                <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 30px; border-radius: 15px; border: 3px solid #28a745;">
+                    <div style="background: #28a745; color: white; padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: inline-block;">
+                        VENCEDOR
+                    </div>
+                    <div style="font-size: 36px; font-weight: 900; color: #155724; margin-bottom: 20px;">
+                        ${winner.firstName}
+                    </div>
+                    <div style="text-align: left; margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(21, 87, 36, 0.1);">
+                            <span style="font-weight: 600; color: #155724;">ID:</span>
+                            <span style="font-weight: 700; color: #28a745;">${winner.platformId}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(21, 87, 36, 0.1);">
+                            <span style="font-weight: 600; color: #155724;">Data:</span>
+                            <span style="font-weight: 700; color: #28a745;">${now.toLocaleDateString('pt-BR')}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                            <span style="font-weight: 600; color: #155724;">Horário:</span>
+                            <span style="font-weight: 700; color: #28a745;">${now.toLocaleTimeString('pt-BR')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            // Mostrar resultado
-            document.getElementById('algorithmPhase').style.display = 'none';
-            document.getElementById('resultPhase').style.display = 'block';
-            document.getElementById('backBtn').style.display = 'inline-block';
-            document.getElementById('newRaffleBtn').style.display = 'inline-block';
+            document.getElementById('raffleStatus').innerHTML = `
+                <div style="color: #28a745; font-weight: bold;">
+                    ✅ Sorteio concluído com sucesso!
+                </div>
+            `;
             
-            // Criar confetes especiais
-            createProfessionalConfetti();
+            document.getElementById('backToTableBtn').style.display = 'inline-block';
+            
+            // Criar confetes de celebração
+            createConfetti();
         }
         
-        function createProfessionalConfetti() {
-            const celebrationOverlay = document.getElementById('celebrationOverlay');
-            celebrationOverlay.style.display = 'block';
-            
-            // Confetes dourados e coloridos
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.animationDelay = Math.random() * 3 + 's';
-                confetti.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                
-                const colors = ['#FFD700', '#FFA500', '#FF6347', '#32CD32', '#1E90FF', '#DA70D6', '#FF69B4', '#00CED1'];
-                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                celebrationOverlay.appendChild(confetti);
-            }
-            
-            // Fogos de artifício especiais
-            for (let i = 0; i < 12; i++) {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = Math.random() * 100 + '%';
-                    firework.style.top = Math.random() * 60 + '%';
-                    
-                    const colors = ['#FFD700', '#FF6347', '#32CD32', '#1E90FF', '#DA70D6'];
-                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    celebrationOverlay.appendChild(firework);
-                    
-                    setTimeout(() => {
-                        firework.remove();
-                    }, 1000);
-                }, i * 300);
-            }
-            
-            // Limpar após 8 segundos
-            setTimeout(() => {
-                celebrationOverlay.innerHTML = '';
-                celebrationOverlay.style.display = 'none';
-            }, 8000);
-        }
-        
-        function startNewRaffle() {
-            if (confirm('Deseja realizar um novo sorteio?')) {
-                startRaffle();
-            }
+        // Voltar à tabela
+        function backToTable() {
+            document.getElementById('raffleDisplay').style.display = 'none';
         }
 
-        
-        // Voltar ao banco de dados
-        function backToDatabase() {
-            document.getElementById('raffleScreen').style.display = 'none';
-            document.getElementById('databaseScreen').style.display = 'block';
-        }
+
 
         // Enter para fazer login
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
@@ -1368,5 +1243,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98af9af873f9275b',t:'MTc1OTg2MzI0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98afb25b60d0275b',t:'MTc1OTg2NDIwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
