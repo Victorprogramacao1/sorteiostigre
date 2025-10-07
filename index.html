@@ -1,35 +1,893 @@
-<!doctype html>
-<html dir="ltr" lang="pt">
-  <head>
-    <meta charset="utf-8">
-    <title>Nova guia</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concorrer na Plataforma</title>
     <style>
-      body {
-        background: #41384B;
-        margin: 0;
-      }
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      #backgroundImage {
-        border: none;
-        height: 100%;
-        pointer-events: none;
-        position: fixed;
-        top: 0;
-        visibility: hidden;
-        width: 100%;
-      }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
 
-      [show-background-image] #backgroundImage {
-        visibility: visible;
-      }
+        .title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 1000;
+        }
+
+        .confetti:nth-child(odd) {
+            background: #e74c3c;
+            width: 8px;
+            height: 8px;
+            animation-duration: 2.5s;
+        }
+
+        .confetti:nth-child(even) {
+            background: #3498db;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #2ecc71;
+            width: 6px;
+            height: 6px;
+            animation-duration: 3.5s;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #9b59b6;
+            width: 12px;
+            height: 4px;
+        }
+
+        .confetti:nth-child(5n) {
+            background: #f1c40f;
+            width: 4px;
+            height: 12px;
+            animation-duration: 2.8s;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            display: none;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: firework 1s ease-out forwards;
+        }
+
+        @keyframes firework {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        .bounce-animation {
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .secret-button {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.2;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .secret-button:hover {
+            opacity: 0.5;
+            transform: scale(1.05);
+        }
+
+        .secret-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .secret-modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .database-view {
+            display: none;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .user-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .user-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .admin-options {
+            margin-top: 20px;
+        }
+
+        .admin-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .countdown-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            animation: pulse-circle 1s ease-in-out infinite;
+            position: relative;
+        }
+
+        .countdown-circle::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            opacity: 0.3;
+            animation: ripple 1s ease-out infinite;
+        }
+
+        .countdown-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+
+        @keyframes pulse-circle {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .secret-button {
+                bottom: 15px;
+                right: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .countdown-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .countdown-circle::before {
+                width: 110px;
+                height: 110px;
+            }
+
+            .countdown-number {
+                font-size: 40px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <iframe id="backgroundImage" src=""></iframe>
-    <ntp-app></ntp-app>
-    <script type="module" src="new_tab_page.js"></script>
-    <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
-    <link rel="stylesheet" href="chrome://theme/colors.css?sets=ui,chrome">
-    <link rel="stylesheet" href="shared_vars.css">
-  </body>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🎯 Participar do Sorteio</h1>
+        
+        <form id="concursoForm">
+            <div class="form-group">
+                <label class="form-label" for="platformId">ID na Plataforma</label>
+                <input 
+                    type="number" 
+                    id="platformId" 
+                    name="platformId" 
+                    class="form-input" 
+                    placeholder="Digite seu ID da plataforma"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="firstName">Nome</label>
+                <input 
+                    type="text" 
+                    id="firstName" 
+                    name="firstName" 
+                    class="form-input" 
+                    placeholder="Digite seu nome"
+                    required
+                >
+            </div>
+            
+
+            
+            <button type="submit" class="submit-btn">
+                Concorrer Agora
+            </button>
+        </form>
+        
+        <div id="successMessage" class="success-message">
+            ✅ Inscrição realizada com sucesso! Boa sorte no sorteio!
+        </div>
+    </div>
+
+    <div id="celebrationOverlay" class="celebration-overlay"></div>
+
+    <!-- Botão discreto -->
+    <div id="secretButton" class="secret-button">•</div>
+    
+    <!-- Modal administrativo -->
+    <div id="secretModal" class="secret-modal">
+        <div class="secret-modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <!-- Tela de Login -->
+            <div id="loginScreen">
+                <h3>🔐 Acesso Administrativo</h3>
+                <div class="login-form">
+                    <input 
+                        type="password" 
+                        id="adminPassword" 
+                        class="password-input" 
+                        placeholder="Digite a senha administrativa"
+                    >
+                    <button class="admin-btn" onclick="checkPassword()">Entrar</button>
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- Banco de Dados -->
+            <div id="databaseScreen" class="database-view">
+                <h3>📊 Banco de Dados - Usuários Inscritos</h3>
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>ID Plataforma</th>
+                            <th>Nome</th>
+                            <th>Data Inscrição</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- Dados serão inseridos aqui -->
+                    </tbody>
+                </table>
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="admin-btn" onclick="startRaffle()">🎲 Realizar Sorteio</button>
+                    <button class="admin-btn" onclick="exportData()">Exportar Dados</button>
+                    <button class="admin-btn" onclick="clearDatabase()">Limpar Banco</button>
+                    <button class="admin-btn" onclick="logout()">Sair</button>
+                </div>
+                
+                <!-- Tela de Sorteio -->
+                <div id="raffleScreen" style="display: none; text-align: center; margin-top: 20px;">
+                    <h3>🎲 Sorteio em Andamento</h3>
+                    <div id="raffleCountdown" style="margin: 30px 0; display: flex; justify-content: center;">
+                        <div class="countdown-circle">
+                            <div class="countdown-number">6</div>
+                        </div>
+                    </div>
+                    <div id="raffleAnimation" style="font-size: 24px; color: #666; margin: 20px 0;">Preparando sorteio...</div>
+                    <div id="raffleResult" style="display: none; background: #d4edda; padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px solid #28a745;">
+                        <h4 style="color: #155724; margin: 0 0 10px 0;">🏆 GANHADOR DO SORTEIO!</h4>
+                        <div id="winnerInfo" style="font-size: 18px; font-weight: bold; color: #155724;"></div>
+                    </div>
+                    <button class="admin-btn" onclick="backToDatabase()" style="display: none;" id="backBtn">Voltar ao Banco de Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createConfetti() {
+            const celebrationOverlay = document.getElementById('celebrationOverlay');
+            celebrationOverlay.style.display = 'block';
+            
+            // Criar confetes
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                celebrationOverlay.appendChild(confetti);
+            }
+            
+            // Criar fogos de artifício
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * 100 + '%';
+                    firework.style.top = Math.random() * 50 + '%';
+                    
+                    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8'];
+                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    celebrationOverlay.appendChild(firework);
+                    
+                    setTimeout(() => {
+                        firework.remove();
+                    }, 1000);
+                }, i * 200);
+            }
+            
+            // Limpar confetes após 4 segundos
+            setTimeout(() => {
+                celebrationOverlay.innerHTML = '';
+                celebrationOverlay.style.display = 'none';
+            }, 4000);
+        }
+
+        // Bloquear letras no campo ID
+        document.getElementById('platformId').addEventListener('keypress', function(e) {
+            // Permitir apenas números (0-9)
+            if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'Enter') {
+                e.preventDefault();
+            }
+        });
+
+        // Bloquear colar texto com letras
+        document.getElementById('platformId').addEventListener('paste', function(e) {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData('text');
+            if (/^\d+$/.test(paste)) {
+                this.value = paste;
+            }
+        });
+
+        // Banco de dados simulado (localStorage)
+        let usersDatabase = JSON.parse(localStorage.getItem('usersDatabase')) || [];
+        const adminPassword = 'Vic20142015@';
+
+        // Botão administrativo
+        document.getElementById('secretButton').addEventListener('click', function() {
+            document.getElementById('secretModal').style.display = 'block';
+            showLoginScreen();
+        });
+
+        // Verificar senha
+        function checkPassword() {
+            const inputPassword = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (inputPassword === adminPassword) {
+                showDatabaseScreen();
+                errorDiv.style.display = 'none';
+            } else {
+                errorDiv.textContent = 'Senha incorreta!';
+                errorDiv.style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        // Mostrar tela de login
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('databaseScreen').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Mostrar banco de dados
+        function showDatabaseScreen() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('databaseScreen').style.display = 'block';
+            loadUserData();
+        }
+
+        // Carregar dados dos usuários
+        function loadUserData() {
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+            
+            if (usersDatabase.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #666;">Nenhum usuário inscrito ainda</td></tr>';
+                return;
+            }
+            
+            usersDatabase.forEach(user => {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = user.platformId;
+                row.insertCell(1).textContent = user.firstName;
+                row.insertCell(2).textContent = user.date;
+            });
+        }
+
+        // Salvar usuário no banco
+        function saveUser(platformId, firstName) {
+            const newUser = {
+                platformId: platformId,
+                firstName: firstName,
+                date: new Date().toLocaleString('pt-BR')
+            };
+            
+            usersDatabase.push(newUser);
+            localStorage.setItem('usersDatabase', JSON.stringify(usersDatabase));
+        }
+
+        // Exportar dados
+        function exportData() {
+            if (usersDatabase.length === 0) {
+                alert('Não há dados para exportar!');
+                return;
+            }
+            
+            let csvContent = 'ID Plataforma,Nome,Data Inscrição\n';
+            usersDatabase.forEach(user => {
+                csvContent += `${user.platformId},${user.firstName},${user.date}\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'usuarios_inscritos.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Limpar banco de dados
+        function clearDatabase() {
+            if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita!')) {
+                usersDatabase = [];
+                localStorage.removeItem('usersDatabase');
+                loadUserData();
+                alert('Banco de dados limpo com sucesso!');
+            }
+        }
+
+        // Logout
+        function logout() {
+            showLoginScreen();
+        }
+
+        // Iniciar sorteio
+        function startRaffle() {
+            if (usersDatabase.length === 0) {
+                alert('Não há usuários cadastrados para sortear!');
+                return;
+            }
+            
+            if (usersDatabase.length === 1) {
+                alert('É necessário pelo menos 2 usuários para realizar um sorteio!');
+                return;
+            }
+            
+            // Mostrar tela de sorteio
+            document.getElementById('databaseScreen').style.display = 'none';
+            document.getElementById('raffleScreen').style.display = 'block';
+            
+            // Reset elementos
+            document.getElementById('raffleResult').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('raffleCountdown').style.display = 'block';
+            document.getElementById('raffleAnimation').style.display = 'block';
+            
+            // Iniciar contagem regressiva
+            let countdown = 6;
+            const countdownElement = document.getElementById('raffleCountdown');
+            const animationElement = document.getElementById('raffleAnimation');
+            
+            countdownElement.querySelector('.countdown-number').textContent = countdown;
+            animationElement.textContent = 'Preparando sorteio...';
+            
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                countdownElement.querySelector('.countdown-number').textContent = countdown;
+                
+                if (countdown === 4) {
+                    animationElement.textContent = 'Embaralhando participantes...';
+                } else if (countdown === 2) {
+                    animationElement.textContent = 'Selecionando ganhador...';
+                }
+                
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    performRaffle();
+                }
+            }, 1000);
+        }
+        
+        // Realizar o sorteio
+        function performRaffle() {
+            const countdownElement = document.getElementById('raffleCountdown');
+            const animationElement = document.getElementById('raffleAnimation');
+            
+            // Esconder countdown
+            countdownElement.style.display = 'none';
+            animationElement.textContent = 'Sorteando...';
+            
+            // Animação de sorteio (mostrar nomes aleatórios rapidamente)
+            let animationCount = 0;
+            const maxAnimations = 20;
+            
+            const raffleAnimation = setInterval(() => {
+                const randomUser = usersDatabase[Math.floor(Math.random() * usersDatabase.length)];
+                animationElement.innerHTML = `
+                    <div style="font-size: 20px; color: #667eea;">
+                        ID: ${randomUser.platformId}<br>
+                        ${randomUser.firstName}
+                    </div>
+                `;
+                
+                animationCount++;
+                
+                if (animationCount >= maxAnimations) {
+                    clearInterval(raffleAnimation);
+                    showWinner();
+                }
+            }, 100);
+        }
+        
+        // Mostrar ganhador
+        function showWinner() {
+            // Selecionar ganhador aleatório
+            const winnerIndex = Math.floor(Math.random() * usersDatabase.length);
+            const winner = usersDatabase[winnerIndex];
+            
+            // Esconder animação
+            document.getElementById('raffleAnimation').style.display = 'none';
+            
+            // Mostrar resultado
+            document.getElementById('winnerInfo').innerHTML = `
+                <div style="font-size: 24px; margin-bottom: 10px;">🎉 ${winner.firstName} 🎉</div>
+                <div style="font-size: 16px;">ID da Plataforma: ${winner.platformId}</div>
+                <div style="font-size: 14px; color: #666; margin-top: 5px;">Inscrito em: ${winner.date}</div>
+            `;
+            
+            document.getElementById('raffleResult').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'inline-block';
+            
+            // Criar confetes para celebrar
+            createRaffleConfetti();
+        }
+        
+        // Confetes especiais para o sorteio
+        function createRaffleConfetti() {
+            const celebrationOverlay = document.getElementById('celebrationOverlay');
+            celebrationOverlay.style.display = 'block';
+            
+            // Criar confetes dourados
+            for (let i = 0; i < 80; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                
+                // Cores especiais para o sorteio
+                const raffleColors = ['#FFD700', '#FFA500', '#FF6347', '#32CD32', '#1E90FF', '#DA70D6'];
+                confetti.style.background = raffleColors[Math.floor(Math.random() * raffleColors.length)];
+                
+                celebrationOverlay.appendChild(confetti);
+            }
+            
+            // Limpar confetes após 6 segundos
+            setTimeout(() => {
+                celebrationOverlay.innerHTML = '';
+                celebrationOverlay.style.display = 'none';
+            }, 6000);
+        }
+        
+        // Voltar ao banco de dados
+        function backToDatabase() {
+            document.getElementById('raffleScreen').style.display = 'none';
+            document.getElementById('databaseScreen').style.display = 'block';
+        }
+
+        // Enter para fazer login
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Fechar modal
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            document.getElementById('secretModal').style.display = 'none';
+        });
+
+        // Fechar modal clicando fora
+        document.getElementById('secretModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        document.getElementById('concursoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const platformId = document.getElementById('platformId').value;
+            const firstName = document.getElementById('firstName').value;
+            
+            if (platformId.trim() && firstName.trim()) {
+                // Simula o processamento da inscrição
+                const submitBtn = document.querySelector('.submit-btn');
+                const container = document.querySelector('.container');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = 'Processando...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    // Salvar no banco de dados
+                    saveUser(platformId, firstName);
+                    
+                    // Iniciar celebração
+                    createConfetti();
+                    container.classList.add('bounce-animation');
+                    
+                    document.getElementById('successMessage').style.display = 'block';
+                    submitBtn.textContent = '🎉 Inscrito com Sucesso! 🎉';
+                    submitBtn.style.background = '#28a745';
+                    
+                    // Reset após 5 segundos
+                    setTimeout(() => {
+                        document.getElementById('concursoForm').reset();
+                        document.getElementById('successMessage').style.display = 'none';
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        container.classList.remove('bounce-animation');
+                    }, 5000);
+                }, 1500);
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98af74954275275b',t:'MTc1OTg2MTY3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
