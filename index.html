@@ -339,55 +339,186 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
+        .countdown-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
         .countdown-circle {
-            width: 120px;
-            height: 120px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea, #764ba2);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            animation: pulse-circle 1s ease-in-out infinite;
+            box-shadow: 
+                0 0 0 4px rgba(102, 126, 234, 0.2),
+                0 0 0 8px rgba(102, 126, 234, 0.1),
+                0 20px 40px rgba(102, 126, 234, 0.3);
             position: relative;
+            animation: professional-pulse 1s ease-in-out infinite;
         }
 
         .countdown-circle::before {
             content: '';
             position: absolute;
-            width: 130px;
-            height: 130px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            opacity: 0.3;
-            animation: ripple 1s ease-out infinite;
+            opacity: 0.2;
+            animation: professional-ripple 1.5s ease-out infinite;
+        }
+
+        .countdown-circle::after {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            opacity: 0.1;
+            animation: professional-ripple 1.5s ease-out infinite 0.3s;
         }
 
         .countdown-number {
-            font-size: 48px;
-            font-weight: bold;
+            font-size: 72px;
+            font-weight: 900;
             color: white;
-            z-index: 1;
+            z-index: 10;
+            position: relative;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: number-bounce 0.6s ease-out;
+        }
+
+        .countdown-progress {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
             position: relative;
         }
 
-        @keyframes pulse-circle {
+        .countdown-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 4px;
+            transition: width 1s ease-out;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .countdown-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: text-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes professional-pulse {
             0%, 100% {
                 transform: scale(1);
+                box-shadow: 
+                    0 0 0 4px rgba(102, 126, 234, 0.2),
+                    0 0 0 8px rgba(102, 126, 234, 0.1),
+                    0 20px 40px rgba(102, 126, 234, 0.3);
             }
             50% {
-                transform: scale(1.05);
+                transform: scale(1.08);
+                box-shadow: 
+                    0 0 0 8px rgba(102, 126, 234, 0.3),
+                    0 0 0 16px rgba(102, 126, 234, 0.15),
+                    0 25px 50px rgba(102, 126, 234, 0.4);
             }
         }
 
-        @keyframes ripple {
+        @keyframes professional-ripple {
             0% {
-                transform: scale(1);
+                transform: scale(0.9);
                 opacity: 0.3;
             }
             100% {
-                transform: scale(1.2);
+                transform: scale(1.3);
                 opacity: 0;
+            }
+        }
+
+        @keyframes number-bounce {
+            0% {
+                transform: scale(0.3) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes text-glow {
+            0% {
+                text-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        .raffle-animation-container {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .raffle-animation-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .spinning-names {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: name-spin 0.1s ease-in-out infinite;
+        }
+
+        @keyframes name-spin {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-2px);
             }
         }
 
@@ -515,16 +646,25 @@
                 
                 <!-- Tela de Sorteio -->
                 <div id="raffleScreen" style="display: none; text-align: center; margin-top: 20px;">
-                    <h3>🎲 Sorteio em Andamento</h3>
-                    <div id="raffleCountdown" style="margin: 30px 0; display: flex; justify-content: center;">
+                    <h3 style="font-size: 28px; margin-bottom: 30px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🎲 SORTEIO EM ANDAMENTO</h3>
+                    
+                    <div id="raffleCountdown" class="countdown-container">
                         <div class="countdown-circle">
-                            <div class="countdown-number">6</div>
+                            <div id="countdownNumber" class="countdown-number">5</div>
                         </div>
+                        <div class="countdown-progress">
+                            <div id="progressBar" class="countdown-progress-bar" style="width: 100%;"></div>
+                        </div>
+                        <div id="countdownText" class="countdown-text">Preparando Sorteio</div>
                     </div>
-                    <div id="raffleAnimation" style="font-size: 24px; color: #666; margin: 20px 0;">Preparando sorteio...</div>
-                    <div id="raffleResult" style="display: none; background: #d4edda; padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px solid #28a745;">
-                        <h4 style="color: #155724; margin: 0 0 10px 0;">🏆 GANHADOR DO SORTEIO!</h4>
-                        <div id="winnerInfo" style="font-size: 18px; font-weight: bold; color: #155724;"></div>
+                    
+                    <div id="raffleAnimationContainer" class="raffle-animation-container" style="display: none;">
+                        <div id="raffleAnimation" class="spinning-names">Sorteando...</div>
+                    </div>
+                    
+                    <div id="raffleResult" style="display: none; background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 30px; border-radius: 15px; margin: 30px 0; border: 3px solid #28a745; box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);">
+                        <h4 style="color: #155724; margin: 0 0 20px 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px;">🏆 GANHADOR DO SORTEIO! 🏆</h4>
+                        <div id="winnerInfo" style="font-size: 20px; font-weight: bold; color: #155724;"></div>
                     </div>
                     <button class="admin-btn" onclick="backToDatabase()" style="display: none;" id="backBtn">Voltar ao Banco de Dados</button>
                 </div>
@@ -715,25 +855,42 @@
             // Reset elementos
             document.getElementById('raffleResult').style.display = 'none';
             document.getElementById('backBtn').style.display = 'none';
-            document.getElementById('raffleCountdown').style.display = 'block';
-            document.getElementById('raffleAnimation').style.display = 'block';
+            document.getElementById('raffleCountdown').style.display = 'flex';
+            document.getElementById('raffleAnimationContainer').style.display = 'none';
             
-            // Iniciar contagem regressiva
-            let countdown = 6;
-            const countdownElement = document.getElementById('raffleCountdown');
-            const animationElement = document.getElementById('raffleAnimation');
+            // Iniciar contagem regressiva profissional
+            let countdown = 5;
+            const countdownNumberElement = document.getElementById('countdownNumber');
+            const countdownTextElement = document.getElementById('countdownText');
+            const progressBarElement = document.getElementById('progressBar');
             
-            countdownElement.querySelector('.countdown-number').textContent = countdown;
-            animationElement.textContent = 'Preparando sorteio...';
+            countdownNumberElement.textContent = countdown;
+            countdownTextElement.textContent = 'PREPARANDO SORTEIO';
+            progressBarElement.style.width = '100%';
             
             const countdownInterval = setInterval(() => {
                 countdown--;
-                countdownElement.querySelector('.countdown-number').textContent = countdown;
                 
+                // Animar mudança do número
+                countdownNumberElement.style.animation = 'none';
+                setTimeout(() => {
+                    countdownNumberElement.style.animation = 'number-bounce 0.6s ease-out';
+                    countdownNumberElement.textContent = countdown;
+                }, 50);
+                
+                // Atualizar barra de progresso
+                const progressPercent = (countdown / 5) * 100;
+                progressBarElement.style.width = progressPercent + '%';
+                
+                // Atualizar texto baseado na contagem
                 if (countdown === 4) {
-                    animationElement.textContent = 'Embaralhando participantes...';
+                    countdownTextElement.textContent = 'CARREGANDO PARTICIPANTES';
+                } else if (countdown === 3) {
+                    countdownTextElement.textContent = 'EMBARALHANDO NOMES';
                 } else if (countdown === 2) {
-                    animationElement.textContent = 'Selecionando ganhador...';
+                    countdownTextElement.textContent = 'PREPARANDO ALGORITMO';
+                } else if (countdown === 1) {
+                    countdownTextElement.textContent = 'INICIANDO SORTEIO';
                 }
                 
                 if (countdown === 0) {
@@ -746,32 +903,83 @@
         // Realizar o sorteio
         function performRaffle() {
             const countdownElement = document.getElementById('raffleCountdown');
+            const animationContainer = document.getElementById('raffleAnimationContainer');
             const animationElement = document.getElementById('raffleAnimation');
             
-            // Esconder countdown
+            // Esconder countdown e mostrar animação
             countdownElement.style.display = 'none';
-            animationElement.textContent = 'Sorteando...';
+            animationContainer.style.display = 'block';
             
-            // Animação de sorteio (mostrar nomes aleatórios rapidamente)
+            // Fase 1: Animação rápida de nomes (3 segundos)
             let animationCount = 0;
-            const maxAnimations = 20;
+            const maxAnimations = 30;
+            let currentSpeed = 50; // Começar rápido
             
-            const raffleAnimation = setInterval(() => {
+            animationElement.innerHTML = '<div style="font-size: 28px; color: #667eea; font-weight: bold;">🎲 SORTEANDO... 🎲</div>';
+            
+            setTimeout(() => {
+                const raffleAnimation = setInterval(() => {
+                    const randomUser = usersDatabase[Math.floor(Math.random() * usersDatabase.length)];
+                    animationElement.innerHTML = `
+                        <div style="font-size: 24px; color: #667eea; font-weight: bold; text-align: center;">
+                            <div style="font-size: 18px; color: #999; margin-bottom: 5px;">ID: ${randomUser.platformId}</div>
+                            <div style="font-size: 28px; color: #667eea;">${randomUser.firstName}</div>
+                        </div>
+                    `;
+                    
+                    animationCount++;
+                    
+                    // Diminuir velocidade gradualmente para criar suspense
+                    if (animationCount > 15) {
+                        currentSpeed += 20;
+                        clearInterval(raffleAnimation);
+                        setTimeout(() => {
+                            performSlowRaffle(animationCount);
+                        }, currentSpeed);
+                        return;
+                    }
+                }, currentSpeed);
+            }, 500);
+        }
+        
+        // Fase 2: Animação lenta para criar suspense
+        function performSlowRaffle(startCount) {
+            const animationElement = document.getElementById('raffleAnimation');
+            let animationCount = startCount;
+            const maxAnimations = 45;
+            let currentSpeed = 150;
+            
+            const slowRaffleAnimation = setInterval(() => {
                 const randomUser = usersDatabase[Math.floor(Math.random() * usersDatabase.length)];
                 animationElement.innerHTML = `
-                    <div style="font-size: 20px; color: #667eea;">
-                        ID: ${randomUser.platformId}<br>
-                        ${randomUser.firstName}
+                    <div style="font-size: 24px; color: #667eea; font-weight: bold; text-align: center; transform: scale(1.1);">
+                        <div style="font-size: 18px; color: #999; margin-bottom: 5px;">ID: ${randomUser.platformId}</div>
+                        <div style="font-size: 32px; color: #667eea;">${randomUser.firstName}</div>
                     </div>
                 `;
                 
                 animationCount++;
                 
-                if (animationCount >= maxAnimations) {
-                    clearInterval(raffleAnimation);
-                    showWinner();
+                // Aumentar ainda mais o intervalo para criar mais suspense
+                if (animationCount > 35) {
+                    currentSpeed += 50;
                 }
-            }, 100);
+                
+                if (animationCount >= maxAnimations) {
+                    clearInterval(slowRaffleAnimation);
+                    
+                    // Pausa dramática antes de mostrar o ganhador
+                    animationElement.innerHTML = `
+                        <div style="font-size: 32px; color: #667eea; font-weight: bold;">
+                            🥁 E O GANHADOR É... 🥁
+                        </div>
+                    `;
+                    
+                    setTimeout(() => {
+                        showWinner();
+                    }, 2000);
+                }
+            }, currentSpeed);
         }
         
         // Mostrar ganhador
@@ -780,15 +988,26 @@
             const winnerIndex = Math.floor(Math.random() * usersDatabase.length);
             const winner = usersDatabase[winnerIndex];
             
-            // Esconder animação
-            document.getElementById('raffleAnimation').style.display = 'none';
+            // Esconder container de animação
+            document.getElementById('raffleAnimationContainer').style.display = 'none';
             
-            // Mostrar resultado
+            // Mostrar resultado com animação especial
             document.getElementById('winnerInfo').innerHTML = `
-                <div style="font-size: 24px; margin-bottom: 10px;">🎉 ${winner.firstName} 🎉</div>
-                <div style="font-size: 16px;">ID da Plataforma: ${winner.platformId}</div>
-                <div style="font-size: 14px; color: #666; margin-top: 5px;">Inscrito em: ${winner.date}</div>
+                <div style="font-size: 36px; margin-bottom: 15px; animation: winner-bounce 1s ease-out;">🎉 ${winner.firstName} 🎉</div>
+                <div style="font-size: 20px; margin-bottom: 10px; color: #155724;">ID da Plataforma: <strong>${winner.platformId}</strong></div>
+                <div style="font-size: 16px; color: #666; margin-top: 10px; padding: 10px; background: rgba(255, 255, 255, 0.7); border-radius: 8px;">Inscrito em: ${winner.date}</div>
             `;
+            
+            // Adicionar animação CSS para o ganhador
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes winner-bounce {
+                    0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+                    50% { transform: scale(1.2) rotate(5deg); }
+                    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
             
             document.getElementById('raffleResult').style.display = 'block';
             document.getElementById('backBtn').style.display = 'inline-block';
@@ -889,5 +1108,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98af74954275275b',t:'MTc1OTg2MTY3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98af7c6d3404275b',t:'MTc1OTg2MTk5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
